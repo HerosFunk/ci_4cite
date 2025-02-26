@@ -57,3 +57,17 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm test
+
+  summary:
+    name: Commit Info Summary
+    runs-on: ubuntu-latest
+    needs: [lint, build, test]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Display Commit Info
+        run: |
+          echo "### ✅ Build Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit ID:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Auteur:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Timestamp:** $(git log -1 --format=%cd)" >> $GITHUB_STEP_SUMMARY
